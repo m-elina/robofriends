@@ -1,45 +1,54 @@
-import React, { Component } from 'react';
+import React from 'react';
 import CardList from '../components/CardList';
-import SearchBox from '../components/SearchBox';
-import Scroll from '../components/Scroll';
+// import {robots} from './robots.js'; brauchen wir nicht mehr /* weitere Component für den Inhalt der Cards importieren, {} weil Component mehrere Bestandteile hat*/
+import Searchbox from '../components/Searchbox';
 import './App.css';
+import Scroll from '../components/Scroll';
 
-class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      robots: [],
-      searchfield: ''
+
+class App extends React.Component {
+    constructor() {
+        super()
+        // state beinhaltet alles, was sich verändern soll, und es lebt in der App Component
+            this.state = {
+                robots: [],
+                searchfield: ''
+            }
     }
-  }
 
-  componentDidMount() {
-    fetch('https://jsonplaceholder.typicode.com/users')
-      .then(response=> response.json())
-      .then(users => {this.setState({ robots: users})});
-  }
+    // fügt die Roboter aus robots.js in den Array oben ein
+    componentDidMount() { 
+        fetch('https://jsonplaceholder.typicode.com/users') /* The Fetch API provides an interface for fetching resources, wir fetchen die user, fetch is a method of the windows object */
+        .then(response => response.json()) /* wir bekommen einen response */
+        .then(users => this.setState({robots: users})); /* dann bekommen wir die user, welche wir mit state updaten */
+    }
 
-  onSearchChange = (event) => {
-    this.setState({ searchfield: event.target.value })
-  }
+    // Function, damit immer, wenn sich was in Searchbox-Input verändert, bekommen wir ein event und console.log wird getriggert
+    onSearchChange = (event) => { /* wir müssen hieraus eine Funktion machen, damit sich "this" auf App bezieht, weil wir hier eine eigene Methode zu einem COmponent gemacht haben */
+        // mit der nächsten Zeile wird der gesuchte Inhalt in der Console gefiltert (in der Console, weil wir unten console.log(filteredRobots) haben)
+        this.setState({searchfield: event.target.value}) /* target.value: should give us the value of the search term, also gibt den Inhalt des Suchfelds in der Console wieder*/
+        // console.log(filteredRobots);
+    }
 
-  render() {
-    const { robots, searchfield } = this.state;
-    const filteredRobots = robots.filter(robot =>{
-      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
-    })
-    return !robots.length ?
-      <h1>Loading</h1> :
-      (
-        <div className='tc'>
-          <h1 className='f1'>RoboFriends</h1>
-          <SearchBox searchChange={this.onSearchChange}/>
-          <Scroll>
-            <CardList robots={filteredRobots} />
-          </Scroll>
-        </div>
-      );
-  }
+    render() {
+        const {robots, searchfield} = this.state;
+        const filteredRobots = robots.filter(robot => {
+            return robot.name.toLowerCase().includes(searchfield.toLowerCase())
+        })
+        if (!robots.length) { /* als Fallback, wenn es zu lange lädt, bedeutet, wenn länge der Robots gleich 0, also kein Roboter geladen */
+            return <h1>Loading</h1>
+        } else {
+        return (
+            <div className='tc'>
+                <h1 className='f1'>Robriends</h1>
+                <Searchbox searchChange={this.onSearchChange}/> {/* function wird mit Searchbox verknüpft, "this" weil function ein object ist */}
+                <Scroll> {/* wir wollen, dass die CardList scrollbar ist, sodass die Searchbar sticky ist */}
+                    <CardList robots={filteredRobots}/> {/* jetzt wird robots nicht von ganz oben aufgerufen, sondern auch aus state, filteredRobots kann nun mit den robots.js kommunizieren */}
+                </Scroll>          
+            </div>
+        );
+        }
+    }
 }
 
 export default App;
