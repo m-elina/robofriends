@@ -40,7 +40,7 @@ class App extends React.Component {
         } else {
         return (
             <div className='tc'>
-                <h1 className='f1'>Robriends</h1>
+                <h1 className='f1'>RoboFriends</h1>
                 <Searchbox searchChange={this.onSearchChange}/> {/* function wird mit Searchbox verknüpft, "this" weil function ein object ist */}
                 <Scroll> {/* wir wollen, dass die CardList scrollbar ist, sodass die Searchbar sticky ist */}
                     <CardList robots={filteredRobots}/> {/* jetzt wird robots nicht von ganz oben aufgerufen, sondern auch aus state, filteredRobots kann nun mit den robots.js kommunizieren */}
