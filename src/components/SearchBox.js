@@ -1,16 +1,17 @@
 import React from 'react';
 
-const SearchBox = ({ searchfield, searchChange }) => {
-  return (
-    <div className='pa2'>
-      <input
-        className='pa3 ba b--green bg-lightest-blue'
-        type='search'
-        placeholder='search robots'
-        onChange={searchChange}
-      />
-    </div>
-  );
+// Parameter der Funktion aus App.js
+const Searchbox = ({searchfield, searchChange}) => {
+    return (
+        <div className='pa2'>
+            <input 
+                className='pa3 ba b--green bg-lightest-blue'
+                type='search' 
+                placeholder='search robots'
+                onChange={searchChange} /* event, listening to anytime the input changes, gibt das event in der Console wieder */
+            />
+        </div>
+    );
 }
 
-export default SearchBox;
+export default Searchbox;
