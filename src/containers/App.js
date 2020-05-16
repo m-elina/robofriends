@@ -4,6 +4,8 @@ import CardList from '../components/CardList';
 import Searchbox from '../components/Searchbox';
 import './App.css';
 import Scroll from '../components/Scroll';
+import ErrorBoundry from '../components/ErrorBoundry';
+
 
 
 class App extends React.Component {
@@ -43,7 +45,10 @@ class App extends React.Component {
                 <h1 className='f1'>RoboFriends</h1>
                 <Searchbox searchChange={this.onSearchChange}/> {/* function wird mit Searchbox verknüpft, "this" weil function ein object ist */}
                 <Scroll> {/* wir wollen, dass die CardList scrollbar ist, sodass die Searchbar sticky ist */}
-                    <CardList robots={filteredRobots}/> {/* jetzt wird robots nicht von ganz oben aufgerufen, sondern auch aus state, filteredRobots kann nun mit den robots.js kommunizieren */}
+                    {/* wenn CardList nicht geladen werden, dann kommt die Fehlermeldung */}
+                    <ErrorBoundry> 
+                        <CardList robots={filteredRobots}/> {/* jetzt wird robots nicht von ganz oben aufgerufen, sondern auch aus state, filteredRobots kann nun mit den robots.js kommunizieren */}
+                    </ErrorBoundry>
                 </Scroll>          
             </div>
         );
